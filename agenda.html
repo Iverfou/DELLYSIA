@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="DELLYSIA — Réservez un créneau disponible avec nos responsables" />
+  <meta name="theme-color" content="#0f0f1a" />
+  <title>DELLYSIA — Agenda & Créneaux</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-dim: rgba(201,168,76,0.15);
+      --gold-border: rgba(201,168,76,0.28);
+      --bg: #0c0c18;
+      --bg2: #11111f;
+      --bg3: #161628;
+      --text: #e8e2d5;
+      --text-muted: rgba(232,226,213,0.55);
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(201,168,76,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 90%, rgba(201,168,76,0.04) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--gold-border);
+      background: rgba(12,12,24,0.95);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid var(--gold-border);
+      border-radius: 20px;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .back-btn:hover { background: var(--gold-dim); }
+
+    .logo {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      background: var(--gold-dim);
+      flex-shrink: 0;
+    }
+
+    .logo span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      color: var(--gold);
+    }
+
+    .header-text h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: var(--gold);
+    }
+
+    .header-text p {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .page-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 28px;
+    }
+
+    /* ── TEAM TABS ── */
+    .team-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-bottom: 28px;
+      padding-bottom: 4px;
+    }
+
+    .team-tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--gold-border);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab:hover { background: var(--gold-dim); }
+
+    .tab.active {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+    }
+
+    .tab-av {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .tab.active .tab-av {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+    }
+
+    .tab-info { text-align: left; }
+
+    .tab-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .tab-role {
+      font-size: 10px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* ── WEEK NAVIGATION ── */
+    .week-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .week-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    .week-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--gold-border);
+      background: transparent;
+      color: var(--gold);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .week-btn:hover { background: var(--gold-dim); }
+    .week-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* ── DAY GROUPS ── */
+    .day-group {
+      margin-bottom: 20px;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .day-name {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 500;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .day-date {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .day-line {
+      flex: 1;
+      height: 1px;
+      background: var(--gold-border);
+    }
+
+    .slots-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* ── SLOT ── */
+    .slot {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--gold-border);
+      background: var(--bg3);
+      font-size: 13px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slot:hover {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .slot.busy {
+      opacity: 0.3;
+      cursor: not-allowed;
+      text-decoration: line-through;
+      pointer-events: none;
+    }
+
+    .slot.booked {
+      background: rgba(74,222,128,0.08);
+      border-color: rgba(74,222,128,0.35);
+      color: #4ade80;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .slot-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .slot.busy .slot-dot { background: rgba(255,255,255,0.2); }
+    .slot.booked .slot-dot { background: #4ade80; }
+
+    /* ── EMPTY STATE ── */
+    .empty-week {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .legend-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-dot.free { background: var(--gold); }
+    .legend-dot.busy { background: rgba(255,255,255,0.2); }
+    .legend-dot.booked { background: #4ade80; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--gold-border);
+      border-radius: 20px 20px 0 0;
+      padding: 28px 24px 36px;
+      width: 100%;
+      max-width: 500px;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.34,1.16,0.64,1);
+    }
+
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    @media (min-width: 600px) {
+      .modal-overlay { align-items: center; }
+      .modal { border-radius: 20px; transform: scale(0.92); }
+      .modal-overlay.open .modal { transform: scale(1); }
+    }
+
+    .modal-handle {
+      width: 38px; height: 4px;
+      border-radius: 2px;
+      background: var(--gold-border);
+      margin: 0 auto 20px;
+    }
+
+    @media (min-width: 600px) { .modal-handle { display: none; } }
+
+    .modal h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .modal-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .slot-recap {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .slot-recap strong { color: var(--gold); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 400px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 14px; }
+
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: rgba(201,168,76,0.7);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--gold-border);
+      border-radius: 10px;
+      padding: 10px 13px;
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-size: 13.5px;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--gold); }
+
+    .form-group select option { background: #11111f; }
+    .form-group textarea { resize: none; min-height: 64px; line-height: 1.5; }
+
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--gold-border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn-confirm {
+      flex: 2;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #b8860b, #daa520);
+      color: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-confirm:hover { opacity: 0.88; }
+    .btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: rgba(74,222,128,0.15);
+      border: 1px solid rgba(74,222,128,0.4);
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 13px;
+      color: #4ade80;
+      z-index: 300;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 480px) {
+      main { padding: 20px 14px 50px; }
+      .page-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="back-btn">← Retour</a>
+    <div class="logo"><span>D</span></div>
+    <div class="header-text">
+      <h1>DELLYSIA</h1>
+      <p>AGENDA & DISPONIBILITÉS</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h2 class="page-title">Créneaux disponibles</h2>
+  <p class="page-sub">SÉLECTIONNEZ UN CRÉNEAU LIBRE POUR RÉSERVER VOTRE RENDEZ-VOUS</p>
+
+  <!-- TEAM TABS -->
+  <div class="team-tabs" id="teamTabs"></div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot free"></div> Disponible</div>
+    <div class="legend-item"><div class="legend-dot busy"></div> Occupé</div>
+    <div class="legend-item"><div class="legend-dot booked"></div> Réservé par vous</div>
+  </div>
+
+  <!-- WEEK NAV -->
+  <div class="week-nav">
+    <button class="week-btn" id="prevWeek" onclick="changeWeek(-1)">‹</button>
+    <span class="week-label" id="weekLabel"></span>
+    <button class="week-btn" id="nextWeek" onclick="changeWeek(1)">›</button>
+  </div>
+
+  <!-- SLOTS -->
+  <div id="slotsContainer"></div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>CONFIRMER</h2>
+    <p class="modal-sub">VOTRE RENDEZ-VOUS</p>
+
+    <div class="slot-recap" id="slotRecap"></div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Prénom *</label>
+        <input type="text" id="fPrenom" placeholder="Votre prénom" autocomplete="given-name" />
+      </div>
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" id="fNom" placeholder="Votre nom" autocomplete="family-name" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email (confirmation)</label>
+      <input type="email" id="fEmail" placeholder="votre@email.com" autocomplete="email" />
+    </div>
+
+    <div class="form-group">
+      <label>Téléphone</label>
+      <input type="tel" id="fTel" placeholder="+33 6 00 00 00 00" autocomplete="tel" />
+    </div>
+
+    <div class="form-group">
+      <label>Type de contact</label>
+      <select id="fType">
+        <option>Présentiel</option>
+        <option>Appel téléphonique</option>
+        <option>Visioconférence</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Objet du rendez-vous</label>
+      <textarea id="fObjet" placeholder="Ex : Achat appartement à Barcelone…"></textarea>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" id="btnConfirm" onclick="confirmBooking()">RÉSERVER →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Rendez-vous confirmé !</div>
+
+<script>
+  /* ── TEAM ── */
+  const TEAM = [
+    { key:'dalila',  name:'Dalila Malek',  role:'CEO',                   init:'DM' },
+    { key:'ryma',    name:'Ryma Malek',    role:'Dir. Espagne',           init:'RM' },
+    { key:'sara',    name:'Sara Malek',    role:'Dir. France',            init:'SM' },
+    { key:'yacine',  name:'Yacine Malek',  role:'Dir. Maghreb',           init:'YM' },
+    { key:'soumaya', name:'Soumaya Malek', role:'Gestion & Comptabilité', init:'SO' },
+  ];
+
+  /* ── HORAIRES ── */
+  const HOURS = ['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+
+  /* ── STATE ── */
+  let currentTeam = 'dalila';
+  let weekOffset  = 0;
+  let pendingSlot = null;
+
+  // Créneaux réservés par l'utilisateur : "key|dateStr|hour"
+  const booked = new Set(JSON.parse(localStorage.getItem('dellysia_booked') || '[]'));
+
+  // Génère les créneaux "occupés" de façon pseudo-aléatoire mais stable
+  function isBusy(key, dateStr, hour) {
+    const seed = (key + dateStr + hour).split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+    return (seed % 3) === 0; // ~33% des créneaux occupés
+  }
+
+  /* ── WEEK DATES ── */
+  function getWeekDays(offset) {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7) + offset * 7);
+    const days = [];
+    for (let i = 0; i < 5; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      days.push(d);
+    }
+    return days;
+  }
+
+  function fmtDate(d) {
+    return d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  }
+
+  function fmtDateShort(d) {
+    return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric' });
+  }
+
+  function dateKey(d) {
+    return d.toISOString().split('T')[0];
+  }
+
+  function isPast(d, hour) {
+    const now = new Date();
+    const [h, m] = hour.split(':').map(Number);
+    const slotTime = new Date(d);
+    slotTime.setHours(h, m, 0, 0);
+    return slotTime <= now;
+  }
+
+  /* ── RENDER TABS ── */
+  function renderTabs() {
+    const container = document.getElementById('teamTabs');
+    container.innerHTML = '';
+    TEAM.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'tab' + (t.key === currentTeam ? ' active' : '');
+      btn.innerHTML = `<div class="tab-av">${t.init}</div><div class="tab-info"><div class="tab-name">${t.name}</div><div class="tab-role">${t.role}</div></div>`;
+      btn.onclick = () => { currentTeam = t.key; renderTabs(); renderSlots(); };
+      container.appendChild(btn);
+    });
+  }
+
+  /* ── RENDER SLOTS ── */
+  function renderSlots() {
+    const days = getWeekDays(weekOffset);
+    const today = new Date(); today.setHours(0,0,0,0);
+
+    // Week label
+    const first = days[0], last = days[4];
+    document.getElementById('weekLabel').textContent =
+      first.toLocaleDateString('fr-FR',{day:'numeric',month:'long'}) + ' – ' +
+      last.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+
+    // Prev button
+    const firstDay = new Date(days[0]);
+    document.getElementById('prevWeek').disabled = firstDay <= today;
+
+    const container = document.getElementById('slotsContainer');
+    container.innerHTML = '';
+
+    let hasAny = false;
+
+    days.forEach(day => {
+      if (day < today) return;
+
+      const dk = dateKey(day);
+      const freeSlots = HOURS.filter(h => {
+        const slotId = `${currentTeam}|${dk}|${h}`;
+        if (booked.has(slotId)) return false; // booked shown separately
+        return !isBusy(currentTeam, dk, h) && !isPast(day, h);
+      });
+
+      const bookedSlots = HOURS.filter(h => booked.has(`${currentTeam}|${dk}|${h}`));
+      const busySlots   = HOURS.filter(h => {
+        const slotId = `${currentTeam}|${dk}|${h}`;
+        return !booked.has(slotId) && (isBusy(currentTeam, dk, h) || isPast(day, h));
+      });
+
+      const allSlots = HOURS;
+      if (allSlots.length === 0) return;
+      hasAny = true;
+
+      const group = document.createElement('div');
+      group.className = 'day-group';
+
+      group.innerHTML = `
+        <div class="day-header">
+          <span class="day-name">${day.toLocaleDateString('fr-FR',{weekday:'long'})}</span>
+          <span class="day-date">${day.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})}</span>
+          <div class="day-line"></div>
+        </div>
+        <div class="slots-grid" id="grid-${dk}"></div>
+      `;
+
+      container.appendChild(group);
+
+      const grid = document.getElementById(`grid-${dk}`);
+
+      HOURS.forEach(h => {
+        const slotId = `${currentTeam}|${dk}|${h}`;
+        const isBooked = booked.has(slotId);
+        const isBusySlot = !isBooked && (isBusy(currentTeam, dk, h) || isPast(day, h));
+
+        const btn = document.createElement('button');
+        btn.className = 'slot' + (isBooked ? ' booked' : isBusySlot ? ' busy' : '');
+        btn.innerHTML = `<span class="slot-dot"></span>${h}${isBooked ? ' ✓' : ''}`;
+
+        if (!isBooked && !isBusySlot) {
+          btn.onclick = () => openModal(day, h, dk, slotId);
+        }
+
+        grid.appendChild(btn);
+      });
+    });
+
+    if (!hasAny) {
+      container.innerHTML = `<div class="empty-week">Aucun créneau disponible cette semaine.<br>Naviguez vers la semaine suivante →</div>`;
+    }
+  }
+
+  function changeWeek(dir) {
+    weekOffset += dir;
+    renderSlots();
+  }
+
+  /* ── MODAL ── */
+  function openModal(day, hour, dk, slotId) {
+    pendingSlot = { day, hour, dk, slotId };
+    const member = TEAM.find(t => t.key === currentTeam);
+    document.getElementById('slotRecap').innerHTML =
+      `👤 <strong>${member.name}</strong> — ${member.role}<br>` +
+      `📅 <strong>${fmtDate(day)}</strong><br>` +
+      `🕐 <strong>${hour}</strong> — 30 minutes`;
+    document.getElementById('modalOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('fPrenom').focus(), 350);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    pendingSlot = null;
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+
+  /* ── CONFIRM BOOKING ── */
+  async function confirmBooking() {
+    const prenom = document.getElementById('fPrenom').value.trim();
+    if (!prenom) { alert('Veuillez indiquer votre prénom.'); return; }
+
+    const nom   = document.getElementById('fNom').value.trim();
+    const email = document.getElementById('fEmail').value.trim();
+    const tel   = document.getElementById('fTel').value.trim();
+    const type  = document.getElementById('fType').value;
+    const objet = document.getElementById('fObjet').value.trim() || 'Consultation immobilière';
+    const member = TEAM.find(t => t.key === currentTeam);
+
+    const btn = document.getElementById('btnConfirm');
+    btn.disabled = true;
+    btn.textContent = 'Envoi…';
+
+    // Appel API RDV
+    try {
+      await fetch('/api/rdv', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prenom, nom, email, tel, type, objet,
+          agent: `${member.name} — ${member.role}`,
+          date: fmtDate(pendingSlot.day),
+          heure: pendingSlot.hour,
+        }),
+      });
+    } catch(e) { console.warn('Email non envoyé:', e); }
+
+    // Marquer comme réservé
+    booked.add(pendingSlot.slotId);
+    localStorage.setItem('dellysia_booked', JSON.stringify([...booked]));
+
+    closeModal();
+    btn.disabled = false;
+    btn.textContent = 'RÉSERVER →';
+
+    // Réinitialiser formulaire
+    ['fPrenom','fNom','fEmail','fTel','fObjet'].forEach(id => document.getElementById(id).value = '');
+
+    renderSlots();
+    showToast(`✓ RDV confirmé — ${pendingSlot.hour} avec ${member.name}`);
+  }
+
+  /* ── TOAST ── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  /* ── INIT ── */
+  renderTabs();
+  renderSlots();
+</script>
+</body>
+</html>
