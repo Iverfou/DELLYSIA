@@ -1,11 +1,18 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/api/chat",    "dest": "/api/chat.js" },
-    { "src": "/api/rdv",     "dest": "/api/rdv.js"  },
-    { "src": "/agenda.html", "dest": "/agenda.html"  },
-    { "src": "/agenda",      "dest": "/agenda.html"  },
-    { "src": "/(.*)",        "dest": "/index.html"   }
+    { "src": "/api/chat",       "dest": "/api/chat.js" },
+    { "src": "/api/rdv",        "dest": "/api/rdv.js"  },
+    { "src": "/api/profil",     "dest": "/api/profil.js" },
+    { "src": "/api/newsletter", "dest": "/api/newsletter.js" },
+    { "src": "/agenda.html",    "dest": "/agenda.html" },
+    { "src": "/agenda",         "dest": "/agenda.html" },
+    { "src": "/biens.html",     "dest": "/biens.html"  },
+    { "src": "/biens",          "dest": "/biens.html"  },
+    { "src": "/profil.html",    "dest": "/profil.html" },
+    { "src": "/profil",         "dest": "/profil.html" },
+    { "src": "/",               "dest": "/index.html"  },
+    { "src": "/(.*)",           "dest": "/index.html"  }
   ],
   "headers": [
     {
