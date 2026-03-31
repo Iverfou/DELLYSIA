@@ -743,6 +743,10 @@
         <h1>DELLYSIA</h1>
         <p data-i18n="tagline">AGENCE IMMOBILIÈRE INTERNATIONALE</p>
       </div>
+      <nav style="margin-left:auto;display:flex;gap:8px;align-items:center;margin-right:10px">
+        <a href="biens.html" style="color:var(--gold);font-size:10px;letter-spacing:1px;text-decoration:none;padding:5px 12px;border:1px solid var(--gold-border);border-radius:16px;transition:background .2s;white-space:nowrap" onmouseover="this.style.background='var(--gold-dim)'" onmouseout="this.style.background='transparent'">Nos biens</a>
+        <a href="profil.html" style="color:var(--gold);font-size:10px;letter-spacing:1px;text-decoration:none;padding:5px 12px;border:1px solid var(--gold-border);border-radius:16px;transition:background .2s;white-space:nowrap" onmouseover="this.style.background='var(--gold-dim)'" onmouseout="this.style.background='transparent'">Mon profil</a>
+      </nav>
       <div class="header-status">
         <div class="lang-selector" id="langSelector"></div>
         <div class="dot"></div>
@@ -879,7 +883,7 @@
       opt_presentiel:'Présentiel', opt_appel:'Appel téléphonique', opt_visio:'Visioconférence',
       btn_cancel:'Annuler', btn_confirm:'CONFIRMER →',
       greeting:`Bienvenue chez <strong>DELLYSIA Immobilier</strong> !<br><br>Je suis votre assistant IA. Je peux vous aider à :<br>• Prendre rendez-vous avec nos directeurs<br>• Demander un rappel téléphonique<br>• Découvrir nos offres en Espagne, France et Maghreb<br><br>Comment puis-je vous aider ?`,
-      act_rdv:'Prendre un RDV', act_agenda:'Voir les créneaux', act_info:'Nos services', act_rappel:'Rappel téléphonique',
+      act_rdv:'Prendre un RDV', act_agenda:'Voir les créneaux', act_info:'Nos services', act_rappel:'Rappel téléphonique', act_biens:'Nos biens', act_profil:'Mon profil',
       system_prompt:`Tu es l'assistant virtuel de DELLYSIA, une agence immobilière internationale de prestige. Réponds toujours en FRANÇAIS, avec un ton élégant, professionnel et chaleureux. Sois concis (3-5 phrases maximum). L'agence DELLYSIA propose : vente et achat de biens résidentiels et commerciaux, investissements immobiliers internationaux, accompagnement personnalisé. Équipe : Dalila Malek (CEO), Ryma Malek (Dir. Espagne), Sara Malek (Dir. France), Yacine Malek (Dir. Maghreb), Soumaya Malek (Gestion). Si RDV souhaité, encourage à utiliser le formulaire. Ne donne pas de coordonnées ni de prix.`,
     },
     en: {
@@ -895,7 +899,7 @@
       opt_presentiel:'In person', opt_appel:'Phone call', opt_visio:'Video call',
       btn_cancel:'Cancel', btn_confirm:'CONFIRM →',
       greeting:`Welcome to <strong>DELLYSIA Real Estate</strong>!<br><br>I am your AI assistant. I can help you:<br>• Book an appointment with our directors<br>• Request a callback<br>• Discover our listings in Spain, France & Maghreb<br><br>How can I help you?`,
-      act_rdv:'Book an appointment', act_agenda:'View availability', act_info:'Our services', act_rappel:'Request callback',
+      act_rdv:'Book an appointment', act_agenda:'View availability', act_info:'Our services', act_rappel:'Request callback', act_biens:'Our properties', act_profil:'My profile',
       system_prompt:`You are the virtual assistant of DELLYSIA, a prestigious international real estate agency. Always reply in ENGLISH, with an elegant, professional and warm tone. Be concise (3-5 sentences max). DELLYSIA offers: residential and commercial property sales and purchases, international real estate investment, personalized support. Team: Dalila Malek (CEO), Ryma Malek (Spain Director), Sara Malek (France Director), Yacine Malek (Maghreb Director), Soumaya Malek (Admin). If appointment requested, encourage use of the form. Do not share contact details or prices.`,
     },
     es: {
@@ -911,7 +915,7 @@
       opt_presentiel:'Presencial', opt_appel:'Llamada telefónica', opt_visio:'Videollamada',
       btn_cancel:'Cancelar', btn_confirm:'CONFIRMAR →',
       greeting:`¡Bienvenido a <strong>DELLYSIA Inmobiliaria</strong>!<br><br>Soy su asistente IA. Puedo ayudarle a:<br>• Concertar una cita con nuestros directores<br>• Solicitar una llamada de vuelta<br>• Descubrir nuestras propiedades en España, Francia y Magreb<br><br>¿En qué puedo ayudarle?`,
-      act_rdv:'Concertar cita', act_agenda:'Ver disponibilidad', act_info:'Nuestros servicios', act_rappel:'Solicitar llamada',
+      act_rdv:'Concertar cita', act_agenda:'Ver disponibilidad', act_info:'Nuestros servicios', act_rappel:'Solicitar llamada', act_biens:'Nuestros inmuebles', act_profil:'Mi perfil',
       system_prompt:`Eres el asistente virtual de DELLYSIA, una agencia inmobiliaria internacional de prestigio. Responde siempre en ESPAÑOL, con un tono elegante, profesional y cálido. Sé conciso (3-5 frases máximo). DELLYSIA ofrece: compraventa de inmuebles residenciales y comerciales, inversión inmobiliaria internacional, acompañamiento personalizado. Equipo: Dalila Malek (CEO), Ryma Malek (Dir. España), Sara Malek (Dir. Francia), Yacine Malek (Dir. Magreb), Soumaya Malek (Gestión). Si desea cita, anima a usar el formulario. No facilites datos de contacto ni precios.`,
     },
     ar: {
@@ -927,7 +931,7 @@
       opt_presentiel:'حضوري', opt_appel:'مكالمة هاتفية', opt_visio:'مكالمة فيديو',
       btn_cancel:'إلغاء', btn_confirm:'تأكيد ←',
       greeting:`أهلاً بكم في <strong>DELLYSIA العقارية</strong>!<br><br>أنا مساعدكم الذكي. يمكنني مساعدتكم في:<br>• حجز موعد مع مدرائنا<br>• طلب معاودة الاتصال<br>• اكتشاف عروضنا في إسبانيا وفرنسا والمغرب العربي<br><br>كيف يمكنني مساعدتكم؟`,
-      act_rdv:'حجز موعد', act_agenda:'عرض المواعيد المتاحة', act_info:'خدماتنا', act_rappel:'طلب اتصال',
+      act_rdv:'حجز موعد', act_agenda:'عرض المواعيد المتاحة', act_info:'خدماتنا', act_rappel:'طلب اتصال', act_biens:'عقاراتنا', act_profil:'ملفي الشخصي',
       system_prompt:`أنت المساعد الافتراضي لوكالة DELLYSIA العقارية الدولية الراقية. أجب دائماً بالعربية، بأسلوب راقٍ ومهني ودافئ. كن موجزاً (3-5 جمل كحد أقصى). تقدم DELLYSIA: بيع وشراء العقارات السكنية والتجارية، الاستثمار العقاري الدولي، المرافقة الشخصية. الفريق: دليلة مالك (المديرة التنفيذية)، ريما مالك (مديرة إسبانيا)، سارة مالك (مديرة فرنسا)، ياسين مالك (مدير المغرب العربي)، سمية مالك (الإدارة). إذا طُلب موعد، شجّع على استخدام النموذج. لا تشارك معلومات اتصال أو أسعار.`,
     },
   };
@@ -990,8 +994,8 @@
     if (btnConfirm) btnConfirm.textContent = t('btn_confirm');
 
     // ACTIONS
-    ACTIONS.main    = [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')},{k:'info',label:t('act_info')}];
-    ACTIONS.contact = [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')}];
+    ACTIONS.main    = [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')},{k:'biens',label:t('act_biens')},{k:'profil',label:t('act_profil')}];
+    ACTIONS.contact = [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')},{k:'biens',label:t('act_biens')}];
     ACTIONS.rdvOnly = [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')}];
 
     // Lang buttons active state
@@ -1043,9 +1047,9 @@
   };
 
   const ACTIONS = {
-    main:    [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')},{k:'info',label:t('act_info')}],
+    main:    [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')},{k:'biens',label:t('act_biens')},{k:'profil',label:t('act_profil')}],
     regions: [{k:'espagne',label:'Espagne'},{k:'france',label:'France'},{k:'maghreb',label:'Maghreb'}],
-    contact: [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')}],
+    contact: [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')},{k:'biens',label:t('act_biens')}],
     rdvOnly: [{k:'rdv',label:t('act_rdv')},{k:'agenda',label:t('act_agenda')}],
   };
 
@@ -1175,11 +1179,13 @@
   }
 
   function handleAction(key) {
-    const labels = { rdv:t('act_rdv'), agenda:t('act_agenda'), rappel:t('act_rappel'), espagne:'Direction Espagne', france:'Direction France', maghreb:'Direction Maghreb', info:t('act_info'), dalila:'Direction CEO', sara:'Direction France', yacine:'Direction Maghreb', soumaya:'Direction Gestion' };
+    const labels = { rdv:t('act_rdv'), agenda:t('act_agenda'), rappel:t('act_rappel'), biens:t('act_biens'), profil:t('act_profil'), espagne:'Direction Espagne', france:'Direction France', maghreb:'Direction Maghreb', info:t('act_info'), dalila:'Direction CEO', sara:'Direction France', yacine:'Direction Maghreb', soumaya:'Direction Gestion' };
     const label = labels[key] || key;
     addMsg('user', label);
     if (key === 'rdv') { setTimeout(() => openModal(), 300); return; }
     if (key === 'agenda') { window.location.href = 'agenda.html'; return; }
+    if (key === 'biens') { window.location.href = 'biens.html'; return; }
+    if (key === 'profil') { window.location.href = 'profil.html'; return; }
     sendToClaude(label);
   }
 
