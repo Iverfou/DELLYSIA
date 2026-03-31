@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="DELLYSIA Immobilier — Agence immobilière internationale. Prenez rendez-vous avec nos directeurs en Espagne, France et Maghreb." />
+  <meta name="theme-color" content="#0f0f1a" />
+  <meta property="og:title" content="DELLYSIA — Agence Immobilière" />
+  <meta property="og:description" content="Chatbot IA — Prenez rendez-vous avec nos équipes en Espagne, France et Maghreb." />
+  <meta property="og:type" content="website" />
+  <title>DELLYSIA — Agence Immobilière</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-dim: rgba(201,168,76,0.18);
+      --gold-border: rgba(201,168,76,0.30);
+      --bg: #0c0c18;
+      --bg2: #11111f;
+      --bg3: #161628;
+      --text: #e8e2d5;
+      --text-muted: rgba(232,226,213,0.55);
+      --radius: 14px;
+      --chat-height: calc(100vh - 300px);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(201,168,76,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 90%, rgba(201,168,76,0.05) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LAYOUT ── */
+    #root {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--gold-border);
+      background: rgba(12,12,24,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--gold-dim);
+    }
+
+    .logo span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .header-text h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 5px;
+      color: var(--gold);
+      line-height: 1.1;
+    }
+
+    .header-text p {
+      font-size: 9.5px;
+      letter-spacing: 2.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-status {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 7px #4ade80;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ── TEAM STRIP ── */
+    .team-strip {
+      border-bottom: 1px solid var(--gold-border);
+      background: rgba(12,12,24,0.7);
+    }
+
+    .team-strip-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .team-strip-inner::-webkit-scrollbar { display: none; }
+
+    .team-chip {
+      flex-shrink: 0;
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 1px solid var(--gold-border);
+      background: transparent;
+      color: var(--gold);
+      font-family: 'Jost', sans-serif;
+      font-size: 10.5px;
+      font-weight: 400;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .team-chip:hover,
+    .team-chip.active {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    /* ── CHAT AREA ── */
+    #chatArea {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 360px;
+      max-height: var(--chat-height);
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold-border) transparent;
+    }
+
+    #chatArea::-webkit-scrollbar { width: 4px; }
+    #chatArea::-webkit-scrollbar-track { background: transparent; }
+    #chatArea::-webkit-scrollbar-thumb { background: var(--gold-border); border-radius: 4px; }
+
+    /* ── MESSAGES ── */
+    .msg {
+      display: flex;
+      gap: 10px;
+      animation: msgIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      align-items: flex-end;
+    }
+
+    .msg.user { flex-direction: row-reverse; }
+
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .av {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .av.bot {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+    }
+
+    .av.user {
+      background: var(--bg3);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-muted);
+    }
+
+    .bubble {
+      max-width: 75%;
+      padding: 11px 15px;
+      border-radius: 16px;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+
+    .msg.bot .bubble {
+      background: var(--bg3);
+      border: 1px solid var(--gold-border);
+      border-bottom-left-radius: 4px;
+      color: var(--text);
+    }
+
+    .msg.user .bubble {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-bottom-right-radius: 4px;
+      color: var(--text);
+    }
+
+    /* ── QUICK ACTIONS ── */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .act-btn {
+      padding: 5px 12px;
+      border-radius: 18px;
+      border: 1px solid var(--gold-border);
+      background: transparent;
+      color: var(--gold);
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: background 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .act-btn:hover { background: var(--gold-dim); }
+
+    /* ── RDV CONFIRMATION CARD ── */
+    .rdv-confirm {
+      margin-top: 10px;
+      border: 1px solid var(--gold-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .rdv-confirm-head {
+      background: var(--gold-dim);
+      padding: 8px 14px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .rdv-confirm-body {
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .rdv-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+    }
+
+    .rdv-row .lbl { color: var(--text-muted); }
+    .rdv-row .val { color: var(--text); font-weight: 400; text-align: right; max-width: 60%; }
+    .rdv-row .val.ok { color: #4ade80; }
+
+    /* ── TYPING ── */
+    .typing-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 14px 18px;
+      background: var(--bg3);
+      border: 1px solid var(--gold-border);
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+    }
+
+    .typing-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: tdot 1.3s infinite;
+    }
+
+    .typing-dots span:nth-child(2) { animation-delay: 0.18s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.36s; }
+
+    @keyframes tdot {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+      40% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    /* ── INPUT ZONE ── */
+    .input-zone {
+      border-top: 1px solid var(--gold-border);
+      padding: 14px 20px;
+      background: rgba(11,11,22,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      position: sticky;
+      bottom: 0;
+    }
+
+    #userInput {
+      flex: 1;
+      background: var(--bg3);
+      border: 1px solid var(--gold-border);
+      border-radius: 12px;
+      padding: 11px 15px;
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+      min-height: 44px;
+      max-height: 110px;
+      transition: border-color 0.2s;
+    }
+
+    #userInput::placeholder { color: rgba(201,168,76,0.35); }
+    #userInput:focus { border-color: rgba(201,168,76,0.6); }
+
+    .send-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #b8860b, #daa520);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.15s, opacity 0.2s;
+    }
+
+    .send-btn:hover { transform: scale(1.07); }
+    .send-btn:active { transform: scale(0.95); }
+    .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .send-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+      margin-left: 2px;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--gold-border);
+      border-radius: 20px 20px 0 0;
+      padding: 28px 24px 32px;
+      width: 100%;
+      max-width: 520px;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.34,1.16,0.64,1);
+    }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
+
+    @media (min-width: 600px) {
+      .modal-overlay {
+        align-items: center;
+      }
+      .modal {
+        border-radius: 20px;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: scale(0.92);
+      }
+      .modal-overlay.open .modal {
+        transform: scale(1);
+      }
+    }
+
+    .modal-handle {
+      width: 38px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--gold-border);
+      margin: 0 auto 20px;
+    }
+
+    @media (min-width: 600px) { .modal-handle { display: none; } }
+
+    .modal h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .modal .modal-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 22px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 400px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: rgba(201,168,76,0.7);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--gold-border);
+      border-radius: 10px;
+      padding: 10px 13px;
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-size: 13.5px;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .form-group select option { background: #11111f; }
+
+    .form-group textarea {
+      resize: none;
+      min-height: 68px;
+      line-height: 1.5;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--gold-border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-cancel:hover { background: rgba(255,255,255,0.04); }
+
+    .btn-confirm {
+      flex: 2;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #b8860b, #daa520);
+      color: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-confirm:hover { opacity: 0.88; }
+    .btn-confirm:active { transform: scale(0.98); }
+
+    /* ── TEAM CARDS SECTION ── */
+    .team-section {
+      padding: 24px 20px;
+      border-top: 1px solid var(--gold-border);
+      background: rgba(12,12,24,0.5);
+    }
+
+    .team-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .team-card {
+      border: 1px solid var(--gold-border);
+      border-radius: 12px;
+      padding: 14px 12px;
+      background: var(--bg3);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      text-align: center;
+    }
+
+    .team-card:hover {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+    }
+
+    .team-card .tc-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--gold-border);
+      background: var(--gold-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: var(--gold);
+      margin: 0 auto 8px;
+    }
+
+    .team-card .tc-name {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .team-card .tc-role {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 14px 20px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: rgba(201,168,76,0.3);
+      border-top: 1px solid rgba(201,168,76,0.1);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (min-width: 900px) {
+      main {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        grid-template-rows: 1fr auto;
+        gap: 0;
+        min-height: calc(100vh - 130px);
+      }
+
+      .chat-col {
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--gold-border);
+      }
+
+      #chatArea {
+        min-height: 500px;
+        max-height: calc(100vh - 250px);
+      }
+
+      .team-section {
+        border-top: none;
+        border-left: none;
+        padding: 20px 16px;
+        grid-column: 2;
+        grid-row: 1 / 3;
+        overflow-y: auto;
+        max-height: calc(100vh - 130px);
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .team-card { text-align: left; }
+      .team-card .tc-avatar { margin: 0 0 8px; }
+
+      .input-zone {
+        border-right: 1px solid var(--gold-border);
+        grid-column: 1;
+        position: relative;
+        bottom: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-text h1 { font-size: 18px; letter-spacing: 3px; }
+      .header-text p { font-size: 8.5px; }
+      .bubble { font-size: 13px; max-width: 85%; }
+      #chatArea { padding: 16px 14px 10px; }
+      .input-zone { padding: 10px 14px; }
+    }
+  </style>
+</head>
+<body>
+<div id="root">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="logo"><span>D</span></div>
+      <div class="header-text">
+        <h1>DELLYSIA</h1>
+        <p>AGENCE IMMOBILIÈRE INTERNATIONALE</p>
+      </div>
+      <div class="header-status">
+        <div class="dot"></div>
+        <span class="hide-xs">En ligne</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- TEAM STRIP (mobile / tablet) -->
+  <div class="team-strip">
+    <div class="team-strip-inner">
+      <button class="team-chip active" data-key="all">Tous</button>
+      <button class="team-chip" data-key="dalila">Dalila — CEO</button>
+      <button class="team-chip" data-key="ryma">Ryma — Espagne</button>
+      <button class="team-chip" data-key="sara">Sara — France</button>
+      <button class="team-chip" data-key="yacine">Yacine — Maghreb</button>
+      <button class="team-chip" data-key="soumaya">Soumaya — Gestion</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- CHAT COLUMN -->
+    <div class="chat-col">
+      <div id="chatArea"></div>
+      <div class="input-zone">
+        <textarea id="userInput" placeholder="Bonjour, je souhaite prendre rendez-vous…" rows="1"></textarea>
+        <button class="send-btn" id="sendBtn" aria-label="Envoyer">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- TEAM SIDEBAR (desktop) -->
+    <aside class="team-section">
+      <h3>NOS ÉQUIPES</h3>
+      <div class="team-grid" id="teamGrid"></div>
+    </aside>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>© 2025 DELLYSIA — TOUS DROITS RÉSERVÉS</footer>
+
+</div>
+
+<!-- MODAL RDV -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-label="Prise de rendez-vous">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>RENDEZ-VOUS</h2>
+    <p class="modal-sub">REMPLISSEZ LE FORMULAIRE CI-DESSOUS</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Prénom</label>
+        <input type="text" id="rdvPrenom" placeholder="Votre prénom" autocomplete="given-name" />
+      </div>
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" id="rdvNom" placeholder="Votre nom" autocomplete="family-name" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email (pour confirmation)</label>
+      <input type="email" id="rdvEmail" placeholder="votre@email.com" autocomplete="email" />
+    </div>
+
+    <div class="form-group">
+      <label>Téléphone</label>
+      <input type="tel" id="rdvTel" placeholder="+33 6 00 00 00 00" autocomplete="tel" />
+    </div>
+
+    <div class="form-group">
+      <label>Responsable souhaité</label>
+      <select id="rdvAgent">
+        <option value="Dalila Malek — CEO">Dalila Malek — CEO</option>
+        <option value="Ryma Malek — Dir. Générale Espagne">Ryma Malek — Dir. Générale Espagne</option>
+        <option value="Sara Malek — Dir. Générale France">Sara Malek — Dir. Générale France</option>
+        <option value="Yacine Malek — Dir. Général Maghreb">Yacine Malek — Dir. Général Maghreb</option>
+        <option value="Soumaya Malek — Gestion & Comptabilité">Soumaya Malek — Gestion & Comptabilité</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="rdvDate" />
+      </div>
+      <div class="form-group">
+        <label>Heure</label>
+        <input type="time" id="rdvHeure" value="10:00" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Objet du rendez-vous</label>
+      <textarea id="rdvObjet" placeholder="Ex : Acquisition appartement à Barcelone…"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Type de contact</label>
+      <select id="rdvType">
+        <option value="Présentiel">Présentiel</option>
+        <option value="Appel téléphonique">Appel téléphonique</option>
+        <option value="Visioconférence">Visioconférence</option>
+      </select>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" id="btnCancel">Annuler</button>
+      <button class="btn-confirm" id="btnConfirm">CONFIRMER →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── DATA ── */
+  const TEAM = [
+    { key:'dalila',  name:'Dalila Malek',  role:'CEO',                        init:'DM', agent:'Dalila Malek — CEO' },
+    { key:'ryma',    name:'Ryma Malek',    role:'Dir. Générale Espagne',       init:'RM', agent:'Ryma Malek — Dir. Générale Espagne' },
+    { key:'sara',    name:'Sara Malek',    role:'Dir. Générale France',        init:'SM', agent:'Sara Malek — Dir. Générale France' },
+    { key:'yacine',  name:'Yacine Malek',  role:'Dir. Général Maghreb',        init:'YM', agent:'Yacine Malek — Dir. Général Maghreb' },
+    { key:'soumaya', name:'Soumaya Malek', role:'Gestion & Comptabilité',      init:'SO', agent:'Soumaya Malek — Gestion & Comptabilité' },
+  ];
+
+  const REPLIES = {
+    greeting: `Bienvenue chez <strong>DELLYSIA Immobilier</strong> !<br><br>Je suis votre assistant IA. Je peux vous aider à :<br>• Prendre rendez-vous avec nos directeurs<br>• Demander un rappel téléphonique<br>• Découvrir nos offres en Espagne, France et Maghreb<br><br>Comment puis-je vous aider ?`,
+    rdv: `Je vais vous aider à planifier votre rendez-vous. Veuillez remplir le formulaire qui s'ouvre.`,
+    rappel: `Bien sûr ! Quel responsable souhaitez-vous contacter pour ce rappel ?`,
+    espagne: `<strong>Ryma Malek</strong>, notre Directrice Générale Espagne, gère nos biens sur toute la péninsule ibérique — Barcelone, Madrid, Marbella, Valence...<br><br>Souhaitez-vous la rencontrer ou être rappelé(e) ?`,
+    france: `<strong>Sara Malek</strong> dirige nos activités en France — Paris, Lyon, Bordeaux, Côte d'Azur...<br><br>Voulez-vous prendre rendez-vous ou demander un rappel ?`,
+    maghreb: `<strong>Yacine Malek</strong> supervise nos projets au Maghreb — Algérie, Maroc, Tunisie — avec des opportunités exceptionnelles.<br><br>Souhaitez-vous le contacter ?`,
+    gestion: `<strong>Soumaya Malek</strong> gère les activités courantes et la comptabilité de l'agence.<br>Pour toute question administrative ou financière, je vous la recommande.`,
+    ceo: `<strong>Dalila Malek</strong>, notre CEO, supervise l'ensemble des opérations de DELLYSIA à l'international.<br><br>Souhaitez-vous la rencontrer ?`,
+    agenda: null,
+    info: `<strong>DELLYSIA</strong> est une agence immobilière internationale de prestige.<br>Nous opérons en :<br>• 🇪🇸 Espagne (Ryma Malek)<br>• 🇫🇷 France (Sara Malek)<br>• 🌍 Maghreb (Yacine Malek)<br><br>Nos biens : résidentiels, commerciaux et investissements. Quelle région vous intéresse ?`,
+    default: `Merci pour votre message. Souhaitez-vous <strong>prendre rendez-vous</strong> avec l'un de nos directeurs, ou préférez-vous un <strong>rappel téléphonique</strong> ?`,
+  };
+
+  const ACTIONS = {
+    main:    [{k:'rdv',label:'Prendre un RDV'},{k:'rappel',label:'Rappel téléphonique'},{k:'info',label:'Nos services'}],
+    regions: [{k:'espagne',label:'Espagne'},{k:'france',label:'France'},{k:'maghreb',label:'Maghreb'}],
+    contact: [{k:'rdv',label:'Prendre RDV'},{k:'rappel',label:'Rappel tél.'}],
+    rdvOnly: [{k:'rdv',label:'Prendre un RDV'}],
+  };
+
+  let agenda = [];
+  let busy = false;
+
+  /* ── BUILD TEAM GRID ── */
+  const grid = document.getElementById('teamGrid');
+  TEAM.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'team-card';
+    div.innerHTML = `<div class="tc-avatar">${t.init}</div><div class="tc-name">${t.name}</div><div class="tc-role">${t.role}</div>`;
+    div.onclick = () => {
+      document.getElementById('rdvAgent').value = t.agent;
+      openModal();
+    };
+    grid.appendChild(div);
+  });
+
+  /* ── TEAM CHIPS ── */
+  document.querySelectorAll('.team-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.team-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const key = chip.dataset.key;
+      if (key !== 'all') {
+        const member = TEAM.find(t => t.key === key);
+        if (member) {
+          document.getElementById('rdvAgent').value = member.agent;
+          openModal();
+        }
+      }
+    });
+  });
+
+  /* ── CHAT ── */
+  const chatArea = document.getElementById('chatArea');
+
+  function addMsg(side, html, actions, card) {
+    const wrap = document.createElement('div');
+    wrap.className = `msg ${side}`;
+    const isBot = side === 'bot';
+    let inner = `<div class="av ${side}">${isBot ? 'D' : 'V'}</div><div class="bubble">`;
+    inner += html;
+    if (card) inner += buildCard(card);
+    if (actions?.length) {
+      inner += `<div class="actions">` + actions.map(a =>
+        `<button class="act-btn" data-action="${a.k}">${a.label}</button>`
+      ).join('') + `</div>`;
+    }
+    inner += `</div>`;
+    wrap.innerHTML = inner;
+    wrap.querySelectorAll('.act-btn').forEach(btn => {
+      btn.addEventListener('click', () => handleAction(btn.dataset.action));
+    });
+    chatArea.appendChild(wrap);
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+
+  function buildCard(c) {
+    return `<div class="rdv-confirm">
+      <div class="rdv-confirm-head">CONFIRMATION RENDEZ-VOUS</div>
+      <div class="rdv-confirm-body">
+        <div class="rdv-row"><span class="lbl">Responsable</span><span class="val">${c.agent}</span></div>
+        <div class="rdv-row"><span class="lbl">Date</span><span class="val">${c.date}</span></div>
+        <div class="rdv-row"><span class="lbl">Heure</span><span class="val">${c.heure}</span></div>
+        <div class="rdv-row"><span class="lbl">Type</span><span class="val">${c.type}</span></div>
+        <div class="rdv-row"><span class="lbl">Objet</span><span class="val">${c.objet}</span></div>
+        <div class="rdv-row"><span class="lbl">Statut</span><span class="val ok">✓ Confirmé</span></div>
+      </div>
+    </div>`;
+  }
+
+  function showTyping() {
+    const t = document.createElement('div');
+    t.className = 'typing-wrap';
+    t.id = 'typingEl';
+    t.innerHTML = `<div class="av bot">D</div><div class="typing-dots"><span></span><span></span><span></span></div>`;
+    chatArea.appendChild(t);
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+
+  function hideTyping() {
+    document.getElementById('typingEl')?.remove();
+  }
+
+  function botReply(html, actions, card, delay) {
+    busy = true;
+    document.getElementById('sendBtn').disabled = true;
+    showTyping();
+    setTimeout(() => {
+      hideTyping();
+      addMsg('bot', html, actions, card);
+      busy = false;
+      document.getElementById('sendBtn').disabled = false;
+    }, delay || 800 + Math.random() * 500);
+  }
+
+  /* ── CONVERSATION HISTORY (pour Claude) ── */
+  let history = [];
+
+  /* ── APPEL API CLAUDE ── */
+  async function askClaude(userText) {
+    history.push({ role: 'user', content: userText });
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history }),
+      });
+      if (!res.ok) throw new Error('API error ' + res.status);
+      const data = await res.json();
+      const reply = data.reply || "Je suis désolé, une erreur s'est produite.";
+      history.push({ role: 'assistant', content: reply });
+      return reply;
+    } catch (e) {
+      console.error(e);
+      history.pop();
+      return "Je rencontre une difficulté technique. Veuillez réessayer ou utiliser le formulaire de rendez-vous.";
+    }
+  }
+
+  /* ── DÉTECTION LOCALE : RDV ou IA ? ── */
+  function wantsRdv(txt) {
+    const t = txt.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    return /rendez.vous|rdv|reserver|fixer un|prendre un|formulaire|meeting/.test(t);
+  }
+
+  function handleAction(key) {
+    const labels = { rdv:'Prendre un RDV', rappel:'Demander un rappel', espagne:'Direction Espagne', france:'Direction France', maghreb:'Direction Maghreb', info:'Informations agence', dalila:'Direction CEO', sara:'Direction France', yacine:'Direction Maghreb', soumaya:'Direction Gestion' };
+    const label = labels[key] || key;
+    addMsg('user', label);
+    if (key === 'rdv') { setTimeout(() => openModal(), 300); return; }
+    sendToClaude(label);
+  }
+
+  async function sendToClaude(txt) {
+    busy = true;
+    document.getElementById('sendBtn').disabled = true;
+    showTyping();
+    const reply = await askClaude(txt);
+    hideTyping();
+    const actions = wantsRdv(reply) ? ACTIONS.rdvOnly : ACTIONS.main;
+    addMsg('bot', reply.replace(/\n/g,'<br>'), actions);
+    busy = false;
+    document.getElementById('sendBtn').disabled = false;
+  }
+
+  function sendMsg() {
+    if (busy) return;
+    const inp = document.getElementById('userInput');
+    const txt = inp.value.trim();
+    if (!txt) return;
+    addMsg('user', txt.replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+    inp.value = '';
+    inp.style.height = 'auto';
+    if (wantsRdv(txt)) { openModal(); return; }
+    sendToClaude(txt);
+  }
+
+  /* ── INPUT AUTO-GROW ── */
+  const ui = document.getElementById('userInput');
+  ui.addEventListener('input', () => { ui.style.height = 'auto'; ui.style.height = ui.scrollHeight + 'px'; });
+  ui.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
+  document.getElementById('sendBtn').addEventListener('click', sendMsg);
+
+  /* ── MODAL ── */
+  function openModal() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('rdvDate').min = today;
+    document.getElementById('modalOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('rdvPrenom').focus(), 350);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  document.getElementById('btnCancel').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === document.getElementById('modalOverlay')) closeModal(); });
+
+  document.getElementById('btnConfirm').addEventListener('click', async () => {
+    const prenom = document.getElementById('rdvPrenom').value.trim();
+    const nom    = document.getElementById('rdvNom').value.trim();
+    const tel    = document.getElementById('rdvTel').value.trim();
+    const email  = document.getElementById('rdvEmail').value.trim();
+    const agent  = document.getElementById('rdvAgent').value;
+    const date   = document.getElementById('rdvDate').value;
+    const heure  = document.getElementById('rdvHeure').value;
+    const objet  = document.getElementById('rdvObjet').value.trim() || 'Consultation immobilière';
+    const type   = document.getElementById('rdvType').value;
+
+    if (!prenom || !date) {
+      alert('Veuillez indiquer au minimum votre prénom et la date souhaitée.');
+      return;
+    }
+
+    const btn = document.getElementById('btnConfirm');
+    btn.textContent = 'Envoi…';
+    btn.disabled = true;
+
+    const fullName = [prenom, nom].filter(Boolean).join(' ');
+    const dateStr  = fmtDate(date);
+    const rdv = { prenom, nom: fullName, tel, email, agent, date: dateStr, heure, objet, type };
+
+    // Appel API /rdv pour envoyer l'email
+    try {
+      await fetch('/api/rdv', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(rdv),
+      });
+    } catch(e) { console.warn('Email RDV non envoyé:', e); }
+
+    agenda.push(rdv);
+    closeModal();
+    btn.textContent = 'CONFIRMER →';
+    btn.disabled = false;
+
+    addMsg('user', 'Je confirme mon rendez-vous');
+    const confirmText = `Parfait, <strong>${prenom}</strong> ! Votre rendez-vous a bien été enregistré.${email ? '<br>Un email de confirmation vous a été envoyé.' : ''}<br>Notre équipe vous contactera prochainement.`;
+    addMsg('bot', confirmText, [{k:'rdv',label:'Autre RDV'},{k:'info',label:'Nos services'}], rdv);
+  });
+
+  function fmtDate(d) {
+    if (!d) return '';
+    const [y, m, day] = d.split('-');
+    const M = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+    return `${parseInt(day)} ${M[parseInt(m)-1]} ${y}`;
+  }
+
+  /* ── INIT ── */
+  setTimeout(() => {
+    botReply(REPLIES.greeting, ACTIONS.main, null, 600);
+  }, 500);
+</script>
+</body>
+</html>

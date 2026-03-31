@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "name": "dellysia",
+  "functions": {
+    "api/chat.js": { "maxDuration": 15 },
+    "api/rdv.js":  { "maxDuration": 10 }
+  },
+  "routes": [
+    { "src": "/api/chat", "dest": "/api/chat.js" },
+    { "src": "/api/rdv",  "dest": "/api/rdv.js"  },
+    { "src": "/(.*)",     "dest": "/index.html"   }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options",        "value": "SAMEORIGIN" },
+        { "key": "Cache-Control",          "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ]
+}
