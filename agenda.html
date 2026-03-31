@@ -519,6 +519,12 @@
 
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    .lang-selector { display:flex; gap:4px; align-items:center; margin-left:auto; }
+    .lang-btn { padding:3px 7px; border-radius:6px; border:1px solid transparent; background:transparent; color:var(--text-muted); font-family:"Jost",sans-serif; font-size:10px; font-weight:500; cursor:pointer; transition:all 0.2s; }
+    .lang-btn:hover { color:var(--gold); border-color:var(--gold-border); }
+    .lang-btn.active { color:var(--gold); border-color:var(--gold); background:var(--gold-dim); }
+    body.rtl { direction:rtl; }
+
     @media (max-width: 480px) {
       main { padding: 20px 14px 50px; }
       .page-title { font-size: 22px; }
@@ -529,18 +535,19 @@
 
 <header>
   <div class="header-inner">
-    <a href="index.html" class="back-btn">← Retour</a>
+    <a href="index.html" class="back-btn" id="backBtn">← Retour</a>
     <div class="logo"><span>D</span></div>
     <div class="header-text">
       <h1>DELLYSIA</h1>
-      <p>AGENDA & DISPONIBILITÉS</p>
+      <p id="agendaSub">AGENDA & DISPONIBILITÉS</p>
     </div>
+    <div class="lang-selector" id="langSelector"></div>
   </div>
 </header>
 
 <main>
-  <h2 class="page-title">Créneaux disponibles</h2>
-  <p class="page-sub">SÉLECTIONNEZ UN CRÉNEAU LIBRE POUR RÉSERVER VOTRE RENDEZ-VOUS</p>
+  <h2 class="page-title" id="pageTitle">Créneaux disponibles</h2>
+  <p class="page-sub" id="pageSub">SÉLECTIONNEZ UN CRÉNEAU LIBRE POUR RÉSERVER VOTRE RENDEZ-VOUS</p>
 
   <!-- TEAM TABS -->
   <div class="team-tabs" id="teamTabs"></div>
@@ -608,8 +615,8 @@
     </div>
 
     <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-      <button class="btn-confirm" id="btnConfirm" onclick="confirmBooking()">RÉSERVER →</button>
+      <button class="btn-cancel" id="btnCancelA" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" id="btnConfirmA" onclick="confirmBooking()">RÉSERVER →</button>
     </div>
   </div>
 </div>
@@ -659,7 +666,10 @@
   }
 
   function fmtDate(d) {
-    return d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+    const days_arr = ta('days');
+    const months_arr = ta('months');
+    const dow = (d.getDay() + 6) % 7;
+    return days_arr[dow] + ' ' + d.getDate() + ' ' + months_arr[d.getMonth()];
   }
 
   function fmtDateShort(d) {
@@ -699,8 +709,8 @@
     // Week label
     const first = days[0], last = days[4];
     document.getElementById('weekLabel').textContent =
-      first.toLocaleDateString('fr-FR',{day:'numeric',month:'long'}) + ' – ' +
-      last.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+      first.getDate() + ' ' + ta('months')[first.getMonth()] + ' – ' +
+      last.getDate() + ' ' + ta('months')[last.getMonth()] + ' ' + last.getFullYear();
 
     // Prev button
     const firstDay = new Date(days[0]);
@@ -736,8 +746,8 @@
 
       group.innerHTML = `
         <div class="day-header">
-          <span class="day-name">${day.toLocaleDateString('fr-FR',{weekday:'long'})}</span>
-          <span class="day-date">${day.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})}</span>
+          <span class="day-name">${ta('days')[(day.getDay()+6)%7]}</span>
+          <span class="day-date">${day.getDate() + ' ' + ta('months')[day.getMonth()]}</span>
           <div class="day-line"></div>
         </div>
         <div class="slots-grid" id="grid-${dk}"></div>
@@ -798,7 +808,7 @@
   /* ── CONFIRM BOOKING ── */
   async function confirmBooking() {
     const prenom = document.getElementById('fPrenom').value.trim();
-    if (!prenom) { alert('Veuillez indiquer votre prénom.'); return; }
+    if (!prenom) { alert(ta('alert_prenom')); return; }
 
     const nom   = document.getElementById('fNom').value.trim();
     const email = document.getElementById('fEmail').value.trim();
@@ -837,7 +847,7 @@
     ['fPrenom','fNom','fEmail','fTel','fObjet'].forEach(id => document.getElementById(id).value = '');
 
     renderSlots();
-    showToast(`✓ RDV confirmé — ${pendingSlot.hour} avec ${member.name}`);
+    showToast(ta('toast') + ' — ' + pendingSlot.hour + ' — ' + member.name);
   }
 
   /* ── TOAST ── */
@@ -849,8 +859,148 @@
   }
 
   /* ── INIT ── */
+
+  /* ── i18n ── */
+  const I18N_A = {
+    fr: {
+      back:'← Retour', sub:'AGENDA & DISPONIBILITÉS',
+      title:'Créneaux disponibles', page_sub:'SÉLECTIONNEZ UN CRÉNEAU LIBRE POUR RÉSERVER VOTRE RENDEZ-VOUS',
+      legend_free:'Disponible', legend_busy:'Occupé', legend_booked:'Réservé par vous',
+      modal_title:'CONFIRMER', modal_sub:'VOTRE RENDEZ-VOUS',
+      lbl_prenom:'Prénom *', lbl_nom:'Nom', lbl_email:'Email (confirmation)', lbl_tel:'Téléphone',
+      lbl_type:'Type de contact', lbl_objet:'Objet du rendez-vous',
+      opt_presentiel:'Présentiel', opt_appel:'Appel téléphonique', opt_visio:'Visioconférence',
+      btn_cancel:'Annuler', btn_confirm:'RÉSERVER →',
+      ph_prenom:'Votre prénom', ph_nom:'Votre nom', ph_email:'votre@email.com',
+      ph_tel:'+33 6 00 00 00 00', ph_objet:'Ex : Achat appartement à Barcelone…',
+      toast:'✓ Rendez-vous confirmé !', alert_prenom:'Veuillez indiquer votre prénom.',
+      days:['lundi','mardi','mercredi','jeudi','vendredi'],
+      months:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+    },
+    en: {
+      back:'← Back', sub:'AGENDA & AVAILABILITY',
+      title:'Available slots', page_sub:'SELECT A FREE SLOT TO BOOK YOUR APPOINTMENT',
+      legend_free:'Available', legend_busy:'Busy', legend_booked:'Booked by you',
+      modal_title:'CONFIRM', modal_sub:'YOUR APPOINTMENT',
+      lbl_prenom:'First name *', lbl_nom:'Last name', lbl_email:'Email (confirmation)', lbl_tel:'Phone',
+      lbl_type:'Contact type', lbl_objet:'Subject',
+      opt_presentiel:'In person', opt_appel:'Phone call', opt_visio:'Video call',
+      btn_cancel:'Cancel', btn_confirm:'BOOK →',
+      ph_prenom:'Your first name', ph_nom:'Your last name', ph_email:'your@email.com',
+      ph_tel:'+44 7 00 00 00 00', ph_objet:'Ex: Apartment purchase in Barcelona…',
+      toast:'✓ Appointment confirmed!', alert_prenom:'Please enter your first name.',
+      days:['Monday','Tuesday','Wednesday','Thursday','Friday'],
+      months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    },
+    es: {
+      back:'← Volver', sub:'AGENDA Y DISPONIBILIDAD',
+      title:'Horarios disponibles', page_sub:'SELECCIONE UN HORARIO LIBRE PARA RESERVAR SU CITA',
+      legend_free:'Disponible', legend_busy:'Ocupado', legend_booked:'Reservado por usted',
+      modal_title:'CONFIRMAR', modal_sub:'SU CITA',
+      lbl_prenom:'Nombre *', lbl_nom:'Apellido', lbl_email:'Email (confirmación)', lbl_tel:'Teléfono',
+      lbl_type:'Tipo de contacto', lbl_objet:'Asunto',
+      opt_presentiel:'Presencial', opt_appel:'Llamada', opt_visio:'Videollamada',
+      btn_cancel:'Cancelar', btn_confirm:'RESERVAR →',
+      ph_prenom:'Su nombre', ph_nom:'Su apellido', ph_email:'su@email.com',
+      ph_tel:'+34 6 00 00 00 00', ph_objet:'Ej: Compra apartamento en Barcelona…',
+      toast:'✓ ¡Cita confirmada!', alert_prenom:'Por favor indique su nombre.',
+      days:['Lunes','Martes','Miércoles','Jueves','Viernes'],
+      months:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
+    },
+    ar: {
+      back:'رجوع →', sub:'الأجندة والمواعيد المتاحة',
+      title:'المواعيد المتاحة', page_sub:'اختر موعداً متاحاً لحجز موعدك',
+      legend_free:'متاح', legend_busy:'مشغول', legend_booked:'محجوز منك',
+      modal_title:'تأكيد', modal_sub:'موعدك',
+      lbl_prenom:'الاسم الأول *', lbl_nom:'اللقب', lbl_email:'البريد الإلكتروني', lbl_tel:'الهاتف',
+      lbl_type:'نوع الاتصال', lbl_objet:'موضوع الموعد',
+      opt_presentiel:'حضوري', opt_appel:'مكالمة هاتفية', opt_visio:'مكالمة فيديو',
+      btn_cancel:'إلغاء', btn_confirm:'← حجز',
+      ph_prenom:'اسمك الأول', ph_nom:'لقبك', ph_email:'بريدك@الإلكتروني',
+      ph_tel:'+213 6 00 00 00 00', ph_objet:'مثال: شراء شقة في برشلونة…',
+      toast:'✓ تم تأكيد الموعد!', alert_prenom:'يرجى إدخال اسمك الأول.',
+      days:['الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
+      months:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
+    },
+  };
+
+  const LANGS_A = [
+    { code:'fr', flag:'🇫🇷', label:'FR' },
+    { code:'en', flag:'🇬🇧', label:'EN' },
+    { code:'es', flag:'🇪🇸', label:'ES' },
+    { code:'ar', flag:'🇸🇦', label:'AR' },
+  ];
+
+  let agendaLang = localStorage.getItem('dellysia_lang') || 'fr';
+  function ta(key) { return I18N_A[agendaLang]?.[key] || I18N_A.fr[key] || key; }
+
+  function applyAgendaLang() {
+    const isRtl = agendaLang === 'ar';
+    document.body.classList.toggle('rtl', isRtl);
+    document.documentElement.lang = agendaLang;
+    const el = id => document.getElementById(id);
+    if (el('backBtn'))   el('backBtn').textContent   = ta('back');
+    if (el('agendaSub')) el('agendaSub').textContent  = ta('sub');
+    if (el('pageTitle')) el('pageTitle').textContent  = ta('title');
+    if (el('pageSub'))   el('pageSub').textContent    = ta('page_sub');
+    // Legend
+    const legendDots = document.querySelectorAll('.legend-item');
+    if (legendDots[0]) legendDots[0].childNodes[1] && (legendDots[0].lastChild.textContent = ' ' + ta('legend_free'));
+    if (legendDots[1]) legendDots[1].lastChild && (legendDots[1].lastChild.textContent = ' ' + ta('legend_busy'));
+    if (legendDots[2]) legendDots[2].lastChild && (legendDots[2].lastChild.textContent = ' ' + ta('legend_booked'));
+    // Modal
+    const mTitle = document.querySelector('.modal h2');
+    const mSub   = document.querySelector('.modal .modal-sub');
+    if (mTitle) mTitle.textContent = ta('modal_title');
+    if (mSub)   mSub.textContent   = ta('modal_sub');
+    // Form labels & placeholders
+    const fields = [
+      ['fPrenom','lbl_prenom','ph_prenom'],['fNom','lbl_nom','ph_nom'],
+      ['fEmail','lbl_email','ph_email'],['fTel','lbl_tel','ph_tel'],
+      ['fObjet','lbl_objet','ph_objet'],['fType','lbl_type',null],
+    ];
+    fields.forEach(([id, lkey, phkey]) => {
+      const inp = document.getElementById(id);
+      if (!inp) return;
+      const lbl = inp.closest('.form-group')?.querySelector('label');
+      if (lbl) lbl.textContent = ta(lkey);
+      if (phkey && inp.placeholder !== undefined) inp.placeholder = ta(phkey);
+    });
+    const fType = document.getElementById('fType');
+    if (fType && fType.options.length >= 3) {
+      fType.options[0].text = ta('opt_presentiel');
+      fType.options[1].text = ta('opt_appel');
+      fType.options[2].text = ta('opt_visio');
+    }
+    const bc = document.getElementById('btnCancelA');
+    const bf = document.getElementById('btnConfirmA');
+    if (bc) bc.textContent = ta('btn_cancel');
+    if (bf) bf.textContent = ta('btn_confirm');
+    // Lang buttons
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === agendaLang);
+    });
+    localStorage.setItem('dellysia_lang', agendaLang);
+    renderSlots();
+  }
+
+  function buildAgendaLangSelector() {
+    const container = document.getElementById('langSelector');
+    if (!container) return;
+    container.innerHTML = '';
+    LANGS_A.forEach(l => {
+      const btn = document.createElement('button');
+      btn.className = 'lang-btn' + (l.code === agendaLang ? ' active' : '');
+      btn.dataset.lang = l.code;
+      btn.innerHTML = l.flag + ' ' + l.label;
+      btn.onclick = () => { agendaLang = l.code; applyAgendaLang(); };
+      container.appendChild(btn);
+    });
+  }
+
+  buildAgendaLangSelector();
   renderTabs();
-  renderSlots();
+  applyAgendaLang();
 </script>
 </body>
 </html>
