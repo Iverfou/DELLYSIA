@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="theme-color" content="#0f0f1a"/>
+  <title>DELLYSIA — Mon Profil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);--gold-border:rgba(201,168,76,0.28);
+      --bg:#0c0c18;--bg2:#11111f;--bg3:#161628;--text:#e8e2d5;--muted:rgba(232,226,213,0.55);
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;-webkit-tap-highlight-color:transparent}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 10%,rgba(201,168,76,0.06) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 90%,rgba(201,168,76,0.04) 0%,transparent 55%);pointer-events:none;z-index:0}
+
+    header{border-bottom:1px solid var(--gold-border);background:rgba(12,12,24,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:50}
+    .header-inner{max-width:700px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px}
+    .back-btn{display:flex;align-items:center;gap:6px;color:var(--gold);font-size:12px;letter-spacing:1px;text-decoration:none;padding:6px 12px;border:1px solid var(--gold-border);border-radius:20px;transition:background .2s;flex-shrink:0}
+    .back-btn:hover{background:var(--gold-dim)}
+    .logo{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;background:var(--gold-dim);flex-shrink:0}
+    .logo span{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold)}
+    .header-text h1{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:4px;color:var(--gold)}
+    .header-text p{font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:1px}
+
+    main{max-width:700px;margin:0 auto;padding:32px 20px 60px;position:relative;z-index:1}
+
+    .page-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);letter-spacing:2px;margin-bottom:6px}
+    .page-sub{font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:32px}
+
+    .section{margin-bottom:28px}
+    .section-title{font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--gold-border);text-transform:uppercase}
+
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:480px){.form-row{grid-template-columns:1fr}}
+
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;font-size:10px;letter-spacing:1.5px;color:rgba(201,168,76,.7);margin-bottom:6px;text-transform:uppercase}
+    .form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gold-border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:'Jost',sans-serif;font-size:13.5px;font-weight:300;outline:none;transition:border-color .2s;-webkit-appearance:none}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
+    .form-group select option{background:#11111f}
+    .form-group textarea{resize:none;min-height:80px;line-height:1.5}
+
+    /* CHECKBOX GROUP */
+    .check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+    .check-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--gold-border);border-radius:8px;cursor:pointer;transition:all .2s}
+    .check-item:hover{border-color:var(--gold);background:var(--gold-dim)}
+    .check-item input{display:none}
+    .check-item.checked{border-color:var(--gold);background:var(--gold-dim)}
+    .check-box{width:16px;height:16px;border:1px solid var(--gold-border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s}
+    .check-item.checked .check-box{background:var(--gold);border-color:var(--gold);color:#fff}
+    .check-label{font-size:12px;color:var(--muted)}
+    .check-item.checked .check-label{color:var(--text)}
+
+    /* RANGE */
+    .range-wrap{display:flex;flex-direction:column;gap:6px}
+    .range-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+    .range-val{color:var(--gold);font-weight:500;text-align:center;font-size:14px;margin-top:4px}
+
+    /* NEWSLETTER OPT-IN */
+    .newsletter-box{background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .2s}
+    .newsletter-box:hover{background:rgba(201,168,76,.22)}
+    .newsletter-box input{display:none}
+    .toggle-track{position:relative;width:36px;height:20px;background:rgba(255,255,255,.15);border-radius:10px;transition:background .2s;flex-shrink:0}
+    .toggle-track.on{background:linear-gradient(135deg,#b8860b,#daa520)}
+    .toggle-knob{position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .2s}
+    .toggle-track.on .toggle-knob{transform:translateX(16px)}
+    .newsletter-text h4{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+    .newsletter-text p{font-size:11px;color:var(--muted)}
+
+    /* SUBMIT */
+    .btn-submit{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#b8860b,#daa520);color:#fff;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:1.5px;transition:opacity .2s;margin-top:8px}
+    .btn-submit:hover{opacity:.88}
+    .btn-submit:disabled{opacity:.5;cursor:not-allowed}
+
+    /* SUCCESS */
+    .success-box{display:none;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:16px;padding:32px 24px;text-align:center;margin-top:20px}
+    .success-box.show{display:block}
+    .success-icon{font-size:48px;margin-bottom:12px}
+    .success-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:#4ade80;margin-bottom:8px}
+    .success-text{font-size:13px;color:var(--muted);line-height:1.7}
+
+    @media(max-width:480px){main{padding:20px 14px 50px}.page-title{font-size:22px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="back-btn">← Retour</a>
+    <div class="logo"><span>D</span></div>
+    <div class="header-text">
+      <h1>DELLYSIA</h1>
+      <p>MON PROFIL CLIENT</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h2 class="page-title">Mon profil</h2>
+  <p class="page-sub">RENSEIGNEZ VOS CRITÈRES — NOUS VOUS ENVOYONS LES BIENS QUI CORRESPONDENT</p>
+
+  <div id="formWrap">
+    <!-- IDENTITÉ -->
+    <div class="section">
+      <div class="section-title">Vos coordonnées</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom *</label>
+          <input type="text" id="prenom" placeholder="Votre prénom" autocomplete="given-name"/>
+        </div>
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" id="nom" placeholder="Votre nom" autocomplete="family-name"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="email" placeholder="votre@email.com" autocomplete="email"/>
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" id="tel" placeholder="+33 6 00 00 00 00" autocomplete="tel"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPE DE BIEN -->
+    <div class="section">
+      <div class="section-title">Type de bien recherché</div>
+      <div class="check-grid" id="typeGrid">
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Villa"><div class="check-box">✓</div><span class="check-label">🏡 Villa</span></label>
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Appartement"><div class="check-box">✓</div><span class="check-label">🏢 Appartement</span></label>
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Penthouse"><div class="check-box">✓</div><span class="check-label">🌆 Penthouse</span></label>
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Riad"><div class="check-box">✓</div><span class="check-label">🏰 Riad</span></label>
+      </div>
+    </div>
+
+    <!-- RÉGIONS -->
+    <div class="section">
+      <div class="section-title">Région(s) souhaitée(s)</div>
+      <div class="check-grid" id="regionGrid">
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Espagne"><div class="check-box">✓</div><span class="check-label">🇪🇸 Espagne</span></label>
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="France"><div class="check-box">✓</div><span class="check-label">🇫🇷 France</span></label>
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Maroc"><div class="check-box">✓</div><span class="check-label">🇲🇦 Maroc</span></label>
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Algérie"><div class="check-box">✓</div><span class="check-label">🇩🇿 Algérie</span></label>
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Tunisie"><div class="check-box">✓</div><span class="check-label">🇹🇳 Tunisie</span></label>
+        <label class="check-item" onclick="toggle(this)"><input type="checkbox" value="Autre"><div class="check-box">✓</div><span class="check-label">🌍 Autre</span></label>
+      </div>
+    </div>
+
+    <!-- BUDGET -->
+    <div class="section">
+      <div class="section-title">Budget maximum</div>
+      <div class="range-wrap">
+        <input type="range" id="budget" min="100" max="5000" step="50" value="500" oninput="updateBudget(this.value)"/>
+        <div class="range-labels"><span>100 000 €</span><span>5 000 000 €</span></div>
+        <div class="range-val" id="budgetVal">500 000 €</div>
+      </div>
+    </div>
+
+    <!-- CRITÈRES -->
+    <div class="section">
+      <div class="section-title">Critères supplémentaires</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Surface minimum (m²)</label>
+          <input type="number" id="surface" placeholder="ex : 80" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>Chambres minimum</label>
+          <select id="chambres">
+            <option value="">Peu importe</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+            <option value="5">5+</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Délai d'achat</label>
+          <select id="delai">
+            <option value="Immédiat">Immédiat (0-3 mois)</option>
+            <option value="Court terme">Court terme (3-6 mois)</option>
+            <option value="Moyen terme">Moyen terme (6-12 mois)</option>
+            <option value="Long terme">Long terme (12 mois+)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Objectif</label>
+          <select id="objectif">
+            <option value="Résidence principale">Résidence principale</option>
+            <option value="Résidence secondaire">Résidence secondaire</option>
+            <option value="Investissement locatif">Investissement locatif</option>
+            <option value="Les deux">Résidence + investissement</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Informations complémentaires</label>
+        <textarea id="notes" placeholder="Vue mer souhaitée, piscine obligatoire, proche école internationale..."></textarea>
+      </div>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <div class="section">
+      <div class="section-title">Newsletter hebdomadaire</div>
+      <div class="newsletter-box" id="nlBox" onclick="toggleNewsletter()">
+        <div class="toggle-track" id="nlTrack">
+          <div class="toggle-knob"></div>
+        </div>
+        <div class="newsletter-text">
+          <h4>Recevoir les offres DELLYSIA chaque semaine</h4>
+          <p>Chaque lundi — Biens sélectionnés selon votre profil — Généré par IA Claude</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" id="btnSubmit" onclick="submitProfil()">ENREGISTRER MON PROFIL →</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-box" id="successBox">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Profil enregistré !</div>
+    <div class="success-text" id="successText"></div>
+    <div style="display:flex;gap:10px;margin-top:20px;justify-content:center;flex-wrap:wrap">
+      <a href="biens.html" style="padding:10px 20px;border-radius:10px;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:12px;text-decoration:none;letter-spacing:.8px">Voir nos biens →</a>
+      <a href="agenda.html" style="padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,#b8860b,#daa520);color:#fff;font-size:12px;text-decoration:none;letter-spacing:.8px">Prendre RDV →</a>
+    </div>
+  </div>
+</main>
+
+<script>
+  let newsletter = false;
+
+  function toggle(el) {
+    el.classList.toggle('checked');
+  }
+
+  function toggleNewsletter() {
+    newsletter = !newsletter;
+    document.getElementById('nlTrack').classList.toggle('on', newsletter);
+  }
+
+  function updateBudget(v) {
+    document.getElementById('budgetVal').textContent = Number(v).toLocaleString('fr-FR') + ' 000 €';
+  }
+
+  function getChecked(gridId) {
+    return [...document.querySelectorAll(`#${gridId} .check-item.checked input`)].map(i => i.value);
+  }
+
+  async function submitProfil() {
+    const prenom = document.getElementById('prenom').value.trim();
+    const email  = document.getElementById('email').value.trim();
+
+    if (!prenom || !email) {
+      alert('Veuillez indiquer votre prénom et votre email.');
+      return;
+    }
+
+    const btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+    btn.textContent = 'Enregistrement…';
+
+    const profil = {
+      prenom,
+      nom:       document.getElementById('nom').value.trim(),
+      email,
+      tel:       document.getElementById('tel').value.trim(),
+      types:     getChecked('typeGrid').join(', ') || 'Non précisé',
+      regions:   getChecked('regionGrid').join(', ') || 'Non précisé',
+      budget:    document.getElementById('budget').value + ' 000 €',
+      surface:   document.getElementById('surface').value || 'Non précisé',
+      chambres:  document.getElementById('chambres').value || 'Non précisé',
+      delai:     document.getElementById('delai').value,
+      objectif:  document.getElementById('objectif').value,
+      notes:     document.getElementById('notes').value.trim(),
+      newsletter: newsletter ? 'Oui' : 'Non',
+    };
+
+    try {
+      const res = await fetch('/api/profil', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profil),
+      });
+
+      const data = await res.json();
+
+      document.getElementById('formWrap').style.display = 'none';
+      const box = document.getElementById('successBox');
+      box.classList.add('show');
+      document.getElementById('successText').innerHTML =
+        `Bonjour <strong>${prenom}</strong>, votre profil a bien été enregistré.<br><br>` +
+        (newsletter
+          ? `Vous recevrez chaque lundi à <strong>${email}</strong> une sélection de biens personnalisés selon vos critères.<br><br>`
+          : '') +
+        `Notre équipe analysera votre profil et vous contactera rapidement avec des biens correspondant à votre recherche.`;
+
+    } catch (e) {
+      console.error(e);
+      btn.disabled = false;
+      btn.textContent = 'ENREGISTRER MON PROFIL →';
+      alert('Une erreur est survenue. Veuillez réessayer.');
+    }
+  }
+
+  updateBudget(500);
+</script>
+</body>
+</html>

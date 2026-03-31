@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="theme-color" content="#0f0f1a"/>
+  <title>DELLYSIA — Nos Biens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);--gold-border:rgba(201,168,76,0.28);
+      --bg:#0c0c18;--bg2:#11111f;--bg3:#161628;--text:#e8e2d5;--muted:rgba(232,226,213,0.55);
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;-webkit-tap-highlight-color:transparent}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 10%,rgba(201,168,76,0.06) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 90%,rgba(201,168,76,0.04) 0%,transparent 55%);pointer-events:none;z-index:0}
+
+    header{border-bottom:1px solid var(--gold-border);background:rgba(12,12,24,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:50}
+    .header-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px}
+    .back-btn{display:flex;align-items:center;gap:6px;color:var(--gold);font-size:12px;letter-spacing:1px;text-decoration:none;padding:6px 12px;border:1px solid var(--gold-border);border-radius:20px;transition:background .2s;flex-shrink:0}
+    .back-btn:hover{background:var(--gold-dim)}
+    .logo{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;background:var(--gold-dim);flex-shrink:0}
+    .logo span{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold)}
+    .header-text h1{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:4px;color:var(--gold)}
+    .header-text p{font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:1px}
+    .header-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .profile-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--gold-border);background:var(--gold-dim);color:var(--gold);font-family:'Jost',sans-serif;font-size:11px;font-weight:500;text-decoration:none;letter-spacing:1px;transition:background .2s}
+    .profile-btn:hover{background:rgba(201,168,76,0.25)}
+
+    main{max-width:1100px;margin:0 auto;padding:32px 20px 60px;position:relative;z-index:1}
+    .page-header{margin-bottom:32px}
+    .page-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);letter-spacing:2px;margin-bottom:6px}
+    .page-sub{font-size:12px;color:var(--muted);letter-spacing:1px}
+
+    /* FILTERS */
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+    .filter-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--gold-border);background:transparent;color:var(--muted);font-family:'Jost',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+    .filter-btn:hover{color:var(--gold);border-color:var(--gold)}
+    .filter-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+
+    /* GRID */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+
+    /* CARD */
+    .card{background:var(--bg3);border:1px solid var(--gold-border);border-radius:16px;overflow:hidden;transition:border-color .2s,transform .2s;cursor:pointer}
+    .card:hover{border-color:var(--gold);transform:translateY(-3px)}
+    .card-img{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden}
+    .card-img-bg{position:absolute;inset:0;opacity:.15}
+    .card-badge{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:500;letter-spacing:.8px;font-family:'Jost',sans-serif}
+    .badge-villa{background:rgba(201,168,76,.2);color:#DAA520;border:1px solid rgba(201,168,76,.4)}
+    .badge-apt{background:rgba(59,139,212,.2);color:#5BA3D8;border:1px solid rgba(59,139,212,.4)}
+    .card-region{position:absolute;top:12px;right:12px;font-size:18px}
+    .card-body{padding:16px}
+    .card-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:4px}
+    .card-loc{font-size:11px;color:var(--muted);letter-spacing:.5px;margin-bottom:10px}
+    .card-price{font-size:20px;font-weight:500;color:var(--gold);margin-bottom:12px}
+    .card-specs{display:flex;gap:12px;margin-bottom:14px}
+    .spec{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
+    .spec-val{color:var(--text);font-weight:400}
+    .card-footer{display:flex;gap:8px}
+    .btn-detail{flex:1;padding:8px;border-radius:8px;border:1px solid var(--gold-border);background:transparent;color:var(--gold);font-family:'Jost',sans-serif;font-size:11px;cursor:pointer;transition:background .2s;letter-spacing:.5px}
+    .btn-detail:hover{background:var(--gold-dim)}
+    .btn-rdv{flex:1;padding:8px;border-radius:8px;border:none;background:linear-gradient(135deg,#b8860b,#daa520);color:#fff;font-family:'Jost',sans-serif;font-size:11px;cursor:pointer;font-weight:500;letter-spacing:.5px;transition:opacity .2s}
+    .btn-rdv:hover{opacity:.85}
+
+    /* MODAL DETAIL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;padding:20px}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal{background:var(--bg2);border:1px solid var(--gold-border);border-radius:20px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto}
+    .modal-hero{height:200px;display:flex;align-items:center;justify-content:center;font-size:72px;position:relative;border-radius:20px 20px 0 0;overflow:hidden}
+    .modal-hero-bg{position:absolute;inset:0;opacity:.2}
+    .modal-content{padding:24px}
+    .modal-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--gold);margin-bottom:4px}
+    .modal-loc{font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:16px}
+    .modal-price{font-size:28px;font-weight:500;color:var(--gold);margin-bottom:16px}
+    .modal-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+    .modal-spec{background:var(--bg3);border:1px solid var(--gold-border);border-radius:8px;padding:10px;text-align:center}
+    .modal-spec-val{font-size:16px;font-weight:500;color:var(--text);margin-bottom:2px}
+    .modal-spec-lbl{font-size:10px;color:var(--muted);letter-spacing:.5px}
+    .modal-desc{font-size:13.5px;line-height:1.7;color:var(--muted);margin-bottom:20px}
+    .modal-features{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+    .feature-tag{padding:4px 10px;border-radius:12px;border:1px solid var(--gold-border);font-size:11px;color:var(--gold);background:var(--gold-dim)}
+    .modal-footer{display:flex;gap:10px}
+    .modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid var(--gold-border);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
+
+    .empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:13px}
+
+    @media(max-width:480px){
+      main{padding:20px 14px 50px}
+      .page-title{font-size:24px}
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="back-btn">← Retour</a>
+    <div class="logo"><span>D</span></div>
+    <div class="header-text">
+      <h1>DELLYSIA</h1>
+      <p>NOS BIENS IMMOBILIERS</p>
+    </div>
+    <div class="header-right">
+      <a href="profil.html" class="profile-btn">Mon profil →</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page-header">
+    <h2 class="page-title">Nos biens</h2>
+    <p class="page-sub">VILLAS ET APPARTEMENTS DE PRESTIGE — ESPAGNE · FRANCE · MAGHREB</p>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">Tous</button>
+    <button class="filter-btn" data-filter="villa">Villas</button>
+    <button class="filter-btn" data-filter="appartement">Appartements</button>
+    <button class="filter-btn" data-filter="espagne">Espagne</button>
+    <button class="filter-btn" data-filter="france">France</button>
+    <button class="filter-btn" data-filter="maghreb">Maghreb</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+  const BIENS = [
+    {id:1,type:'villa',region:'espagne',flag:'🇪🇸',emoji:'🏖️',color:'#1a2a1a',
+      titre:'Villa Côte Dorée',loc:'Marbella, Espagne',prix:'1 250 000 €',
+      surface:320,chambres:5,bains:4,parking:2,
+      desc:'Somptueuse villa en première ligne de mer à Marbella. Piscine à débordement, terrasse panoramique, finitions haut de gamme. Vue imprenable sur la Méditerranée.',
+      features:['Piscine à débordement','Vue mer','Domotique','Cave à vins','Spa privatif','Garage double'],
+      contact:'Ryma Malek'},
+    {id:2,type:'appartement',region:'espagne',flag:'🇪🇸',emoji:'🏙️',color:'#1a1a2a',
+      titre:'Penthouse Eixample',loc:'Barcelone, Espagne',prix:'895 000 €',
+      surface:185,chambres:3,bains:2,parking:1,
+      desc:'Penthouse d\'exception au cœur du quartier Eixample. Terrasse privative de 80m², vue sur la Sagrada Família. Architecture moderniste restaurée avec goût.',
+      features:['Terrasse 80m²','Vue Sagrada Família','Climatisation centrale','Concierge 24h','Ascenseur privatif'],
+      contact:'Ryma Malek'},
+    {id:3,type:'villa',region:'espagne',flag:'🇪🇸',emoji:'🌊',color:'#0a1a2a',
+      titre:'Villa Ibiza Dreams',loc:'Ibiza, Espagne',prix:'2 100 000 €',
+      surface:450,chambres:6,bains:5,parking:3,
+      desc:'Villa d\'architecte avec vue panoramique sur la mer. Piscine chauffée, jacuzzi extérieur, jardin méditerranéen. À 5 minutes des plages les plus prisées d\'Ibiza.',
+      features:['Piscine chauffée','Jacuzzi','Jardin 2000m²','Studio indépendant','Sécurité 24h','Port de plaisance proche'],
+      contact:'Ryma Malek'},
+    {id:4,type:'appartement',region:'france',flag:'🇫🇷',emoji:'🗼',color:'#1a1520',
+      titre:'Haussmannien Paris 8e',loc:'Paris, France',prix:'1 450 000 €',
+      surface:145,chambres:3,bains:2,parking:1,
+      desc:'Exceptionnel appartement haussmannien entièrement rénové dans le Triangle d\'Or. Parquet chevrons, moulures d\'époque, cuisine équipée Bulthaup. Vue sur les Champs-Élysées.',
+      features:['Parquet chevrons','Moulures d\'époque','Cuisine Bulthaup','Gardien','Cave','Proche Champs-Élysées'],
+      contact:'Sara Malek'},
+    {id:5,type:'villa',region:'france',flag:'🇫🇷',emoji:'🌿',color:'#0f1a0f',
+      titre:'Villa Belle Époque',loc:'Nice, Côte d\'Azur',prix:'3 200 000 €',
+      surface:520,chambres:7,bains:5,parking:4,
+      desc:'Villa Belle Époque avec parc arboré de 3000m² sur les hauteurs de Nice. Vue mer exceptionnelle, piscine, court de tennis. Propriété d\'exception alliant charme historique et modernité.',
+      features:['Parc 3000m²','Piscine','Court de tennis','Vue mer 180°','Dépendance gardien','Maison de maître'],
+      contact:'Sara Malek'},
+    {id:6,type:'appartement',region:'france',flag:'🇫🇷',emoji:'🍷',color:'#1a0f0f',
+      titre:'Loft Confluence',loc:'Lyon, France',prix:'520 000 €',
+      surface:165,chambres:2,bains:2,parking:1,
+      desc:'Loft industriel d\'exception dans le quartier Confluence. Double hauteur sous plafond, verrières d\'atelier, espaces de vie ouverts. À deux pas des musées et restaurants.',
+      features:['Double hauteur','Verrières atelier','Terrasse','Quartier tendance','Résidence sécurisée','Proche transports'],
+      contact:'Sara Malek'},
+    {id:7,type:'villa',region:'maghreb',flag:'🇲🇦',emoji:'🌴',color:'#1a1500',
+      titre:'Riad Palmeraie',loc:'Marrakech, Maroc',prix:'680 000 €',
+      surface:380,chambres:5,bains:4,parking:2,
+      desc:'Riad authentique entièrement restauré dans la Palmeraie de Marrakech. Patio avec fontaine, piscine, zelliges et bois de cèdre sculptés. Idéal résidence principale ou investissement locatif premium.',
+      features:['Patio fontaine','Piscine','Zelliges artisanaux','Cèdre sculpté','Hammam','Personnel inclus'],
+      contact:'Yacine Malek'},
+    {id:8,type:'appartement',region:'maghreb',flag:'🇩🇿',emoji:'🏛️',color:'#0a0a1a',
+      titre:'Penthouse El Biar',loc:'Alger, Algérie',prix:'320 000 €',
+      surface:220,chambres:4,bains:3,parking:2,
+      desc:'Penthouse contemporain dans le quartier résidentiel d\'El Biar. Vue panoramique sur la baie d\'Alger. Finitions européennes, terrasse de 100m², standing exceptionnel.',
+      features:['Vue baie d\'Alger','Terrasse 100m²','Finitions européennes','Résidence gardée','Générateur','Climatisation centrale'],
+      contact:'Yacine Malek'},
+    {id:9,type:'villa',region:'maghreb',flag:'🇹🇳',emoji:'🌅',color:'#1a0a00',
+      titre:'Villa Sidi Bou Saïd',loc:'Tunis, Tunisie',prix:'480 000 €',
+      surface:290,chambres:4,bains:3,parking:2,
+      desc:'Villa de charme dans le village mythique de Sidi Bou Saïd. Architecture traditionnelle tunisienne avec tous les équipements modernes. Terrasse avec vue sur la Méditerranée et le golfe de Tunis.',
+      features:['Architecture traditionnelle','Vue Méditerranée','Jardin fleuri','Piscine','Village classé','Proximité Carthage'],
+      contact:'Yacine Malek'},
+    {id:10,type:'appartement',region:'espagne',flag:'🇪🇸',emoji:'⛵',color:'#0a1520',
+      titre:'Marina Barceloneta',loc:'Barcelone, Espagne',prix:'650 000 €',
+      surface:110,chambres:2,bains:2,parking:1,
+      desc:'Appartement contemporain face à la marina de Barcelone. Grandes baies vitrées avec vue mer, finitions premium, cuisine ouverte. À deux pas des plages et du Port Olympique.',
+      features:['Vue marina','Baies vitrées','Cuisine ouverte','Terrasse','Sécurité','Proche plages'],
+      contact:'Ryma Malek'},
+    {id:11,type:'villa',region:'france',flag:'🇫🇷',emoji:'🏰',color:'#0f0f1a',
+      titre:'Bastide Provençale',loc:'Aix-en-Provence, France',prix:'1 850 000 €',
+      surface:420,chambres:6,bains:4,parking:4,
+      desc:'Authentique bastide provençale du XVIIIe siècle au cœur d\'un domaine de 2 hectares. Pierres apparentes, poutres, piscine naturelle. Vignes et oliveraie en production.',
+      features:['Domaine 2 hectares','Piscine naturelle','Vignes','Oliveraie','Pigeonnier','Mas restauré'],
+      contact:'Sara Malek'},
+    {id:12,type:'appartement',region:'maghreb',flag:'🇲🇦',emoji:'🌿',color:'#0f1a10',
+      titre:'Appartement Anfa',loc:'Casablanca, Maroc',prix:'195 000 €',
+      surface:130,chambres:3,bains:2,parking:1,
+      desc:'Appartement moderne dans le quartier résidentiel Anfa. Vue sur l\'Atlantique, finitions soignées, résidence avec piscine commune. Idéal pour investissement ou résidence principale.',
+      features:['Vue Atlantique','Piscine commune','Salle de sport','Gardiennage 24h','Proche Corniche','Ascenseur'],
+      contact:'Yacine Malek'},
+  ];
+
+  let activeFilter = 'all';
+
+  function renderGrid() {
+    const grid = document.getElementById('grid');
+    const filtered = activeFilter === 'all' ? BIENS :
+      BIENS.filter(b => b.type === activeFilter || b.region === activeFilter);
+
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="empty">Aucun bien pour ce filtre.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(b => `
+      <div class="card" onclick="openModal(${b.id})">
+        <div class="card-img">
+          <div class="card-img-bg" style="background:linear-gradient(135deg,${b.color},#0c0c18)"></div>
+          <span style="position:relative;font-size:52px">${b.emoji}</span>
+          <span class="card-badge ${b.type === 'villa' ? 'badge-villa' : 'badge-apt'}">${b.type === 'villa' ? 'VILLA' : 'APPARTEMENT'}</span>
+          <span class="card-region">${b.flag}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${b.titre}</div>
+          <div class="card-loc">${b.loc}</div>
+          <div class="card-price">${b.prix}</div>
+          <div class="card-specs">
+            <div class="spec"><span class="spec-val">${b.surface}</span>&nbsp;m²</div>
+            <div class="spec"><span class="spec-val">${b.chambres}</span>&nbsp;ch.</div>
+            <div class="spec"><span class="spec-val">${b.bains}</span>&nbsp;sdb</div>
+          </div>
+          <div class="card-footer">
+            <button class="btn-detail" onclick="event.stopPropagation();openModal(${b.id})">Détails</button>
+            <button class="btn-rdv" onclick="event.stopPropagation();bookRdv(${b.id})">Visiter →</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openModal(id) {
+    const b = BIENS.find(x => x.id === id);
+    if (!b) return;
+    document.getElementById('modalContent').innerHTML = `
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-hero">
+        <div class="modal-hero-bg" style="background:linear-gradient(135deg,${b.color},#0c0c18)"></div>
+        <span style="position:relative;font-size:72px">${b.emoji}</span>
+      </div>
+      <div class="modal-content">
+        <div class="modal-title">${b.titre}</div>
+        <div class="modal-loc">${b.flag} ${b.loc}</div>
+        <div class="modal-price">${b.prix}</div>
+        <div class="modal-specs">
+          <div class="modal-spec"><div class="modal-spec-val">${b.surface} m²</div><div class="modal-spec-lbl">Surface</div></div>
+          <div class="modal-spec"><div class="modal-spec-val">${b.chambres}</div><div class="modal-spec-lbl">Chambres</div></div>
+          <div class="modal-spec"><div class="modal-spec-val">${b.bains}</div><div class="modal-spec-lbl">Salles de bain</div></div>
+        </div>
+        <div class="modal-desc">${b.desc}</div>
+        <div class="modal-features">${b.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}</div>
+        <div class="modal-footer">
+          <button class="btn-detail" style="flex:1" onclick="closeModal()">Fermer</button>
+          <button class="btn-rdv" style="flex:2" onclick="bookRdv(${b.id})">Prendre RDV avec ${b.contact} →</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  function bookRdv(id) {
+    const b = BIENS.find(x => x.id === id);
+    if (b) {
+      sessionStorage.setItem('dellysia_rdv_bien', JSON.stringify({titre: b.titre, contact: b.contact, loc: b.loc}));
+    }
+    window.location.href = 'agenda.html';
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+
+  document.getElementById('filters').addEventListener('click', e => {
+    if (!e.target.classList.contains('filter-btn')) return;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    activeFilter = e.target.dataset.filter;
+    renderGrid();
+  });
+
+  renderGrid();
+</script>
+</body>
+</html>
