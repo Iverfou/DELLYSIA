@@ -1,9 +1,11 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/api/chat", "dest": "/api/chat.js" },
-    { "src": "/api/rdv",  "dest": "/api/rdv.js"  },
-    { "src": "/(.*)",     "dest": "/index.html"   }
+    { "src": "/api/chat",    "dest": "/api/chat.js" },
+    { "src": "/api/rdv",     "dest": "/api/rdv.js"  },
+    { "src": "/agenda.html", "dest": "/agenda.html"  },
+    { "src": "/agenda",      "dest": "/agenda.html"  },
+    { "src": "/(.*)",        "dest": "/index.html"   }
   ],
   "headers": [
     {
