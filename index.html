@@ -877,10 +877,10 @@
   };
 
   const ACTIONS = {
-    main:    [{k:'rdv',label:'Prendre un RDV'},{k:'rappel',label:'Rappel téléphonique'},{k:'info',label:'Nos services'}],
+    main:    [{k:'rdv',label:'Prendre un RDV'},{k:'agenda',label:'Voir les créneaux'},{k:'info',label:'Nos services'}],
     regions: [{k:'espagne',label:'Espagne'},{k:'france',label:'France'},{k:'maghreb',label:'Maghreb'}],
-    contact: [{k:'rdv',label:'Prendre RDV'},{k:'rappel',label:'Rappel tél.'}],
-    rdvOnly: [{k:'rdv',label:'Prendre un RDV'}],
+    contact: [{k:'rdv',label:'Prendre RDV'},{k:'agenda',label:'Voir les créneaux'}],
+    rdvOnly: [{k:'rdv',label:'Prendre un RDV'},{k:'agenda',label:'Voir les créneaux'}],
   };
 
   let agenda = [];
@@ -994,7 +994,7 @@
       const data = await res.json();
       const reply = data.reply || "Je suis désolé, une erreur s'est produite.";
       history.push({ role: 'assistant', content: reply });
-      return reply;
+      return mdToHtml(reply);
     } catch (e) {
       console.error(e);
       history.pop();
@@ -1009,11 +1009,19 @@
   }
 
   function handleAction(key) {
-    const labels = { rdv:'Prendre un RDV', rappel:'Demander un rappel', espagne:'Direction Espagne', france:'Direction France', maghreb:'Direction Maghreb', info:'Informations agence', dalila:'Direction CEO', sara:'Direction France', yacine:'Direction Maghreb', soumaya:'Direction Gestion' };
+    const labels = { rdv:'Prendre un RDV', agenda:'Voir les créneaux disponibles', rappel:'Demander un rappel', espagne:'Direction Espagne', france:'Direction France', maghreb:'Direction Maghreb', info:'Informations agence', dalila:'Direction CEO', sara:'Direction France', yacine:'Direction Maghreb', soumaya:'Direction Gestion' };
     const label = labels[key] || key;
     addMsg('user', label);
     if (key === 'rdv') { setTimeout(() => openModal(), 300); return; }
+    if (key === 'agenda') { window.location.href = 'agenda.html'; return; }
     sendToClaude(label);
+  }
+
+  function mdToHtml(txt) {
+    return txt
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n/g, '<br>');
   }
 
   async function sendToClaude(txt) {
@@ -1023,7 +1031,7 @@
     const reply = await askClaude(txt);
     hideTyping();
     const actions = wantsRdv(reply) ? ACTIONS.rdvOnly : ACTIONS.main;
-    addMsg('bot', reply.replace(/\n/g,'<br>'), actions);
+    addMsg('bot', reply, actions);
     busy = false;
     document.getElementById('sendBtn').disabled = false;
   }
