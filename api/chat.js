@@ -1,46 +1,72 @@
-export default async function handler(req, res) {
-  // CORS
+// api/chat.js — Vercel Serverless Function
+// Connecte le chatbot DELLYSIA à Claude (Anthropic)
+
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
   if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' });
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  const { messages } = req.body;
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'API key not configured on server.' });
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: 'Format invalide — messages[] requis' });
   }
 
   try {
-    const { messages, system } = req.body;
-
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system,
-        messages
-      })
+        model: 'claude-opus-4-5',
+        max_tokens: 600,
+        system: `Tu es l'assistant virtuel de DELLYSIA, une agence immobilière internationale de prestige.
+Réponds toujours en français, avec un ton élégant, professionnel et chaleureux.
+Sois concis (3-5 phrases maximum par réponse).
+
+L'agence DELLYSIA propose :
+- Vente et achat de biens résidentiels : appartements, villas, maisons de prestige
+- Vente et achat de locaux commerciaux : bureaux, commerces, entrepôts
+- Investissements immobiliers internationaux
+- Accompagnement personnalisé de A à Z
+- Expertise sur plusieurs marchés internationaux
+
+L'équipe DELLYSIA :
+- Dalila Malek : CEO — supervise toutes les opérations internationales
+- Ryma Malek : Directrice Générale Espagne — Barcelone, Madrid, Marbella, Valence, Ibiza
+- Sara Malek : Directrice Générale France — Paris, Lyon, Bordeaux, Côte d'Azur
+- Yacine Malek : Directeur Général Maghreb — Algérie, Maroc, Tunisie
+- Soumaya Malek : Gestion des activités courantes et Comptabilité
+
+Si le visiteur souhaite un rendez-vous ou un rappel, encourage-le à utiliser le formulaire disponible.
+Ne donne jamais de numéros de téléphone, d'adresses email ou de prix fictifs.
+Si tu ne sais pas, oriente vers l'équipe via le formulaire de contact.`,
+        messages: messages.map(m => ({
+          role: m.role,
+          content: m.content,
+        })),
+      }),
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      return res.status(response.status).json({ error: data });
+      const err = await response.json();
+      console.error('Anthropic error:', err);
+      return res.status(500).json({ error: 'Erreur API Anthropic', details: err });
     }
 
-    return res.status(200).json(data);
+    const data = await response.json();
+    const reply = data.content?.[0]?.text || "Je suis désolé, je n'ai pas pu générer de réponse.";
 
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(200).json({ reply });
+
+  } catch (error) {
+    console.error('Server error:', error);
+    return res.status(500).json({ error: 'Erreur serveur', message: error.message });
   }
-}
+};
